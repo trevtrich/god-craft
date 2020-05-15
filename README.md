@@ -1,2 +1,1 @@
-# .github
-github defaults configuration
+# God-Craft
