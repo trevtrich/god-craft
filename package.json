@@ -1,6 +1,5 @@
 {
-  "name": "learn-starter",
-  "version": "0.1.0",
+  "name": "god-craft",
   "private": true,
   "scripts": {
     "dev": "next dev",
