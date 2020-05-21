@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import {getSortedPostsData} from '../lib/posts'
 
-export default function Home() {
+export default function Home({allPosts}) {
   return (
     <div className="container">
       <Head>
@@ -16,6 +17,19 @@ export default function Home() {
         <p className="description">
           Here will eventually be an indicator as to what this is.
         </p>
+
+        <section>
+          <h2>Recent Posts</h2>
+          <ul>
+            {allPosts.map(({id, date, title}) => (
+              <li key={id}>
+                {title}
+                <br />
+                {date}
+              </li>
+            ))}
+          </ul>
+        </section>
       </main>
 
       <style jsx>{`
@@ -70,4 +84,13 @@ export default function Home() {
       `}</style>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const allPosts = getSortedPostsData()
+  return {
+    props: {
+      allPosts
+    }
+  }
 }
