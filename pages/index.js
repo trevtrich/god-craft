@@ -1,6 +1,7 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import {getSortedPostsData} from '../lib/posts'
+import Head from 'next/head';
+import Link from 'next/link';
+import {getSortedPostsData} from '../lib/posts';
+import Date from '../components/date';
 
 export default function Home({allPosts}) {
   return (
@@ -28,7 +29,7 @@ export default function Home({allPosts}) {
                   <a>{title}</a>
                 </Link>
                 <br />
-                {date}
+                <Date dateString={date} />
               </li>
             ))}
           </ul>
@@ -43,6 +44,10 @@ export default function Home({allPosts}) {
           flex-direction: column;
           justify-content: center;
           align-items: center;
+        }
+        ul {
+          list-style-type: none;
+          padding: 0;
         }
 
         main {

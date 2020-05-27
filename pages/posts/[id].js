@@ -1,16 +1,14 @@
-import {getAllPostIds, getPostData} from '../../lib/posts'
+import {getAllPostIds, getPostData} from '../../lib/posts';
+import Date from '../../components/date';
 
 export default function Post({ postData }) {
   return (
-    <p>
-      {postData.title}
-      <br />
-      {postData.id}
-      <br />
-      {postData.date}
+    <>
+      <h1>{postData.title}</h1>
+      <Date dateString={postData.date} />
       <br />
       <div dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
-    </p>
+    </>
   )
 }
 
