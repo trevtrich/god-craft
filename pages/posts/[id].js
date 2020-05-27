@@ -9,7 +9,7 @@ export default function Post({ postData }) {
       <br />
       {postData.date}
       <br />
-      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+      <div dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
     </p>
   )
 }
