@@ -1,13 +1,20 @@
+import Head from 'next/head';
 import {getAllPostIds, getPostData} from '../../lib/posts';
 import Date from '../../components/date';
 
-export default function Post({ postData }) {
+export default function Post({postData}) {
   return (
     <>
-      <h1>{postData.title}</h1>
-      <Date dateString={postData.date} />
-      <br />
-      <div dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
+      <Head>
+        <title>{postData.title}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <h1>{postData.title}</h1>
+        <Date dateString={postData.date} />
+        <br />
+        <div dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
+      </main>
     </>
   )
 }
