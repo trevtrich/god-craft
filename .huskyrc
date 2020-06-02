@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "commit-msg": "commitlint -e",
+    "pre-commit": "if [ -n \"$(git ls-files --other --exclude-standard --directory)\" ] || [ -n \"$(git diff --exit-code)\" ]; then echo \"--- Current branch is not clean ---\" \n exit 1; fi && npm test"
+  }
+}
