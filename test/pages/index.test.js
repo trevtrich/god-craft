@@ -1,7 +1,7 @@
 import React from 'react';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {getByRole, getByText, screen} from '@testing-library/dom';
-import HomePage from './index';
+import HomePage from '../../pages/index';
 
 afterEach(cleanup);
 
