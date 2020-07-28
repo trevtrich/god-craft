@@ -1,5 +1,5 @@
 ---
-title: 'Tuning into my preferences in a hapi.js server'
+title: 'Tuning in to my preferences in a hapi.js server'
 date: '2020-07-21'
 tags: 'hands-dirty'
 ---
@@ -82,3 +82,60 @@ contents. When I reloaded the page I got a 500 response. Usually when I get
 this, I can hop over to the running server logs and know immediately what is
 likely wrong. In this case, there were zero logs output from the server. The
 rabbit whole goes further. Time to dig into why I'm not seeing any logs.
+
+### Adding some logs
+At first I tried using:
+
+```js
+server.events.on('log', (event, tags) => {
+  console.log(event);
+});
+```
+
+but that didn't result in any logs being shown. What ended up doing the trick
+was adding `server.option.debug` to the server initialization.
+
+```js
+const server = Hapi.server({
+  port: 8080,
+  host: 'localhost',
+  debug: {log: "*", request: "*"}
+});
+```
+
+There are better ways to handle server logs, but this should at least get it up
+and printing catastrophic failures with stacktraces.
+
+Now that I have logs, I was able to display a basic html file by loading it
+directly from the file system with Node.
+
+```js
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: (request, h) => {
+    return h.response(readFileSync('website/index.html'))
+      .header('Content-Type', 'text/html')
+  }
+});
+```
+
+## Having to restart the server for each change
+As soon as I had the server running and was starting to make regular route
+handler changes, I wanted something to bounce the server for me instead of
+having to kill it with `Ctrl+c` then `npm start` again.
+[nodemon](https://nodemon.io) is good for this, but I've never set it up myself
+so down another rabbit hole I go. Or, actually no this is really
+straightforward. It appears the defaults will look for `.js` files recursively
+in the directory so all I modified with my current setup was the `npm start`
+script to run `nodemon` instead of `node`. This certainly won't work for
+everything, but works for me right now so I'm moving on.
+
+## Routing iteration 1
+It sure seems like I'm going to have some pain in trying to keep routes up to
+date and matched with html files since I have them hard-coded. The fact that I
+had html files directly linked to also created some awkwardness since I'd have
+to create routes that hard-code the `.html` with the path. I believe there are
+plugins like `vision` that will do some of this for you, but I want to force
+myself to think about it myself before going and taking a look at how standard
+plugins pull it off.
