@@ -139,3 +139,38 @@ to create routes that hard-code the `.html` with the path. I believe there are
 plugins like `vision` that will do some of this for you, but I want to force
 myself to think about it myself before going and taking a look at how standard
 plugins pull it off.
+
+It's not perfect, but here's a pretty brute-force way to handle routing for more
+html pages:
+
+```js
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: (request, h) => {
+    return h.response(readFileSync(`website/index.html`))
+      .header('Content-Type', 'text/html')
+  }
+});
+
+server.route({
+  method: 'GET',
+  path: '/{page}',
+  handler: (request, h) => {
+    return h.response(readFileSync(`website/${request.params.page}.html`))
+      .header('Content-Type', 'text/html')
+  }
+});
+```
+
+In thinking through how I would handle subdirectories I created a test file inside
+the file system in a directory. Of course given `path: '/{page}'` as above,
+adding a path won't match. In doing some digging, however, I learned something
+kinda cool about hapi routing. You can do something like: `path: '/{page*}'` to
+match all params following or `path: '/{page*2}'` to match only two segments
+following, so something like `/page/blah/hello`. By defining `path: '/{page*}'`
+arbitrarily we should be able to access any level of depth.
+
+## Securing and limiting at least a bit. (wip)
+- remove non-html requests
+- don't allow pathing for relative dirs to climb, so something like ../../
